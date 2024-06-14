@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 
 class DialogHelper {
   static  showWarningDialog(BuildContext context, String message) {
-    showDialog(
+    return showDialog(
       context: context,
+
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Text(message),
+          content: Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Text(message, style: const TextStyle(fontSize: 15),),
+          ),
           actions: <Widget>[
             TextButton(
               child: const Text('Okay'),

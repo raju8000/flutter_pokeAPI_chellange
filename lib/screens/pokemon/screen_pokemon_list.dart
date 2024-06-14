@@ -6,7 +6,6 @@ import 'package:pokemon_challenge/provider/pokemon_detail_notifier.dart';
 import 'package:pokemon_challenge/provider/pokemon_notifier.dart';
 import 'package:pokemon_challenge/screens/home/screen_home.dart';
 import 'package:pokemon_challenge/screens/pokemon/screen_pokemon_detail.dart';
-import 'package:pokemon_challenge/widgets/dialog.dart';
 import 'package:provider/provider.dart';
 
 class ScreenPokemon extends StatefulWidget {
@@ -25,7 +24,7 @@ class _ScreenPokemonState extends State<ScreenPokemon> {
   void initState() {
     scrollController.addListener(onScroll);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<PokemonNotifier>(context, listen: false).fetchPokemonList();
+      Provider.of<PokemonNotifier>(context, listen: false).fetchPokemonList(context);
     });
 
     super.initState();
@@ -34,7 +33,7 @@ class _ScreenPokemonState extends State<ScreenPokemon> {
     var position = scrollController.position.pixels;
     if (position >= scrollController.position.maxScrollExtent - 25) {
       if (!preventCall) {
-        Provider.of<PokemonNotifier>(context, listen: false).fetchPokemonList(next: true).then((value) => preventCall=false);
+        Provider.of<PokemonNotifier>(context, listen: false).fetchPokemonList(context,next: true).then((value) => preventCall=false);
         preventCall = true;
       }
     }
@@ -84,7 +83,7 @@ class _ScreenPokemonState extends State<ScreenPokemon> {
                             String url = pokemonData.results[index].url!;
                             List<String> parts = url.split('/');
                             String id = parts[parts.length - 2];
-                            Provider.of<PokemonDetailNotifier>(context,listen: false).getPokemonDetail(id);
+                            Provider.of<PokemonDetailNotifier>(context,listen: false).getPokemonDetail(id,context);
                             Provider.of<PageNotifier>(context,listen: false).changePage(page: ScreenPokemonDetail.routeName, unknown: false);
                           },
                           child: Row(
@@ -105,7 +104,7 @@ class _ScreenPokemonState extends State<ScreenPokemon> {
             ),
 
           if(pokemonData.state == PageState.error)
-            DialogHelper.showWarningDialog(context, pokemonData.error)
+            const SizedBox.shrink()
         ],
       ),
     );

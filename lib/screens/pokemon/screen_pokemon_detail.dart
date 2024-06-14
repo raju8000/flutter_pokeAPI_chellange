@@ -4,7 +4,6 @@ import 'package:pokemon_challenge/provider/page_notifier.dart';
 import 'package:pokemon_challenge/provider/pokemon_detail_notifier.dart';
 import 'package:pokemon_challenge/provider/pokemon_notifier.dart';
 import 'package:pokemon_challenge/screens/pokemon/screen_pokemon_list.dart';
-import 'package:pokemon_challenge/widgets/dialog.dart';
 import 'package:pokemon_challenge/widgets/pokemon.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +35,7 @@ class ScreenPokemonDetail extends StatelessWidget {
             Pokemon(pokemon: pokemonDetailNotifier.pokemonDetail!,),
 
           if(pokemonDetailNotifier.state == PageState.error)
-            DialogHelper.showWarningDialog(context, pokemonDetailNotifier.error)
+            const SizedBox.shrink()
         ],
       ),
     );
