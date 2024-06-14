@@ -1,0 +1,37 @@
+import 'package:flutter/cupertino.dart';
+import 'package:pokemon_challenge/models/model_pokemon_detail.dart';
+import 'package:pokemon_challenge/network/network.dart';
+import 'package:pokemon_challenge/provider/pokemon_notifier.dart';
+
+class PokemonDetailNotifier extends ChangeNotifier{
+  int pokemonId = -1;
+  PageState state = PageState.loading;
+  PokemonDetail? pokemonDetail;
+  String error = "";
+
+  Future<void> getPokemonDetail(String  id) async {
+    BaseClientGenerator clientGenerator =
+    BaseClientGenerator()
+      ..body = <String,dynamic>{}
+      ..path = ApiServices.detail+id
+      ..method = "GET";
+
+    final data= await NetworkExecutor.execute<PokemonDetail>(route: clientGenerator ,responseType: PokemonDetail(),);
+
+    data.when(success: (success){
+      pokemonDetail = success;
+      state = PageState.success;
+    },
+        failure: (fail){
+          error = fail!;
+          state = PageState.error;
+        }
+    );
+    notifyListeners();
+
+  }
+  clearData(){
+    state = PageState.loading;
+    pokemonDetail = null;
+  }
+}
